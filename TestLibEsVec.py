@@ -92,7 +92,71 @@ class TestCplxOperations (unittest.TestCase):
         daga2 = lev.adjunta([[(1, -1)], [(2, 1)], [(3, -7)]])
         self.assertAlmostEqual(daga2, [[(1, 1), (2, -1), (3, 7)]])
 
+    def testProductoMatriz(self):
+        A = [[(4, 0), (1, 0), (3, 0)], [(2, 0), (1, 0), (2, 0)], [(4, 0), (1, 0), (5, 0)]]
+        B = [[(1, 0), (1, 0), (2, 0)], [(1, 0), (2, 0), (3, 0)], [(2, 0), (3, 0), (1, 0)]]
+        pro = lev.multiplicacionMatrices(A, B)
+        self.assertAlmostEqual(pro,
+                               [[(11, 0), (15, 0), (14, 0)], [(7, 0), (10, 0), (9, 0)], [(15, 0), (21, 0), (16, 0)]])
 
+        A2 = [[(1, -3), (-2, 4)], [(0, -1), (-4, -6)]]
+        B2 = [[(4, -5), (-6, 9)], [(1, 1), (-3, -2)]]
+        pro2 = lev.multiplicacionMatrices(A2, B2)
+        self.assertAlmostEqual(pro2, [[(-17, -15), (35, 19)], [(-3, -14), (9, 32)]])
+
+    def testAccion(self):
+        A = [[(4, 0), (1, 0), (3, 0)], [(2, 0), (1, 0), (2, 0)], [(4, 0), (1, 0), (5, 0)]]
+        v = [[(2, 0)], [(3, 0)], [(1, 0)]]
+        accion = lev.accion(A, v)
+        self.assertAlmostEqual(accion, [[(14, 0)], [(9, 0)], [(16, 0)]])
+
+        A = [[(-5, 2), (1, -1), (7, -2)], [(2, 0), (3, 3), (-3, 5)], [(8, 10), (1, 0), (9, 5)]]
+        v = [[(2, -1)], [(5, 6)], [(10, -8)]]
+        accion = lev.accion(A, v)
+        self.assertAlmostEqual(accion, [[(57, -66)], [(11, 105)], [(161, -4)]])
+
+    def testPorductoInterno(self):
+        pro = lev.productoInterno([[(2, 0)], [(3, 1)], [(1, 4)]], [[(4, 1)], [(1, 2)], [(3, 3)]])
+        self.assertAlmostEqual(pro, (28, -2))
+
+        pro2 = lev.productoInterno([[(7, -1)], [(8, 4)], [(4, 4)]], [[(-4, 0)], [(-1, -10)], [(3, 3)]])
+        self.assertAlmostEqual(pro2, (-52, -80))
+
+    def testNorma(self):
+        norma = lev.norma([[(2, 0)], [(3, 1)], [(1, 4)]])
+        self.assertAlmostEqual(norma, 5.5677643628300215)
+
+        norma2 = lev.norma([[(-6, 129)], [(89, -3)], [(10, -2)]])
+        self.assertAlmostEqual(norma2, 157.19732822156996)
+
+    def testDistancia(self):
+        dis = lev.distancia([[(2, 0)], [(3, 1)], [(1, 4)]], [[(4, 1)], [(1, 2)], [(3, 3)]])
+        self.assertAlmostEqual(dis, 3.872983346207417)
+
+        dis2 = lev.distancia([[(7, -1)], [(8, 4)], [(4, 4)]], [[(-4, 0)], [(-1, -10)], [(3, 3)]])
+        self.assertAlmostEqual(dis2, 20.024984394500787)
+
+    def testUnitaria(self):
+        uni = lev.unitaria([[(4, 0), (1, 0), (3, 0)], [(2, 0), (1, 0), (2, 0)], [(4, 0), (1, 0), (5, 0)]])
+        self.assertAlmostEqual(uni, False)
+
+        uni2 = lev.unitaria([[(0, 1), (0, 0)], [(0, 0), (1, 0)]])
+        self.assertAlmostEqual(uni2, True)
+
+    def testHermitiana(self):
+        her = lev.hermitiana([[(-5, 2), (1, -1), (7, -2)], [(2, 0), (3, 3), (-3, 5)], [(8, 10), (1, 0), (9, 5)]])
+        self.assertAlmostEqual(her, False)
+
+        her2 = lev.hermitiana([[(-1, 0), (0, -1)], [(0, 1), (1, 0)]])
+        self.assertAlmostEqual(her2, True)
+
+    def testProductoTensor(self):
+        tensor = lev.productoTensor([(3, 0), (1, 0)], [(2,1), (0,1), (2,0)])
+        self.assertAlmostEqual(tensor, [(6, 3), (0, 3), (6, 0), (2, 1), (0, 1), (2, 0)])
+
+        tensor2 = lev.productoTensor([(4, -12), (1, 5), (2, 1)], [(2, 1), (-8, 9), (2, 4)])
+        self.assertAlmostEqual(tensor2,
+                               [(20, -20), (76, 132), (56, -8), (-3, 11), (-53, -31), (-18, 14), (3, 4), (-25, 10), (0, 10)])
 
 if __name__ == '__main__':
     unittest.main()

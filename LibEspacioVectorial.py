@@ -5,6 +5,7 @@ Andrea Durán Vivas
 '''
 
 import Libcplx as lc
+import math
 
 #verificar que el tamaño de los vectores sean iguales
 def verificacion (v,w):
@@ -181,6 +182,110 @@ def adjunta(v):
 
     return transpuesta(conjugadoMatVec(v))
 
+#Producto de dos matrices de tamaños compatibles
+def multiplicacionMatrices(A, B):
+    '''Función que retorna la multiplicación entre dos matrices de tamaños
+       compatibles
+          (list 2D) --> list 2D'''
+
+    filasA = len(A)
+    columnasA = len(A[0])
+    filasB = len(B)
+    columnasB = len(B[0])
+
+    if columnasA != filasB:
+        raise Exception('Incompatible sizes')
+
+    #inicialización de la matriz
+    res = [[(0,0) for i in range(columnasB)] for j in range(filasA)]
+
+    for j in range(filasA):
+        for k in range(columnasB):#
+            for h in range(columnasA):
+                res[j][k] = lc.sumacplx(res[j][k], lc.multiplicacioncplx(A[j][h], B[h][k]))
+    return res
+
+#Acción de una matriz sobre un vector
+def accion(A, v):
+    '''Función que calcula la acción de una matriz sobre un vector
+       (list 2D, list) --> list'''
+
+    return multiplicacionMatrices(A, v)
+
+#Producto interno
+def productoInterno(v1, v2):
+    '''Función que retorna el prodcuto interno entre dos vectores
+       (list 2D, list 2D) --> list 2D'''
+    #Este es el espacio vectorial C^n
+    return multiplicacionMatrices(adjunta(v1), v2)[0][0]
+
+#Norma
+def norma(v):
+    '''Función que retorna la norma de un vector
+       (list) --> list'''
+    pro = productoInterno(v, v)
+    if pro[1] == 0:
+        return math.sqrt(pro[0])
+    else:
+        v2 = lc.conv_cartesiana_a_polar(pro)
+        return (math.sqrt(v2[0], v2[1]/2))
+
+#Distancia
+def distancia(v1, v2):
+    '''Función que retorna la distancia entre dos vectores
+       (list, list) --> list'''
+    resta = restaMatrices(v1, v2)
+    pro = productoInterno(resta, resta)
+
+    if pro[1] == 0:
+        return math.sqrt(pro[0])
+    else:
+        v3 = lc.conv_cartesiana_a_polar(pro)
+        return (math.sqrt(v3[0]), v3[1]/2)
+
+#Unitaria
+def unitaria(A):
+    '''Función que retorna si una matriz es unitaria
+       (list 2D) --> bool'''
+    B = multiplicacionMatrices(adjunta(A), A)
+    for i in range(len(B)):
+        for j in range(len(B[0])):
+            if i == j:
+                if B[i][j] != (1,0):
+                    if (round(B[i][j][0], 10), round(B[i][j][1], 10)) != (1,0):
+                        return False
+            else:
+                if B[i][j] != (0,0):
+                    return False
+                else:
+                    return True
+
+#Hermitiana
+def hermitiana(A):
+    '''Función que retorna si una matriz es hermitiana
+       (list 2D ) --> bool'''
+    adj = adjunta(A)
+    if adj == A:
+        return True
+    return False
+
+#Producto tensor
+def productoTensor (A, B):
+    '''Función que retorna el producto tensor entre vectores
+       (list, list) --> list'''
+    filasA = len(A)
+    filasB = len(B)
+    filasRes = filasA * filasB
+    res = [(0,0)] * filasRes
+
+    index = 0
+    for i in range(filasA):
+        for j in range(filasB):
+            res[index] = lc.multiplicacioncplx(A[i], B[j])
+            index += 1
+    return res
+
+
 if __name__ == '__main__':
     print(sumavec([(0,3), (0,0), (2,8)], [(1,1), (2,1), (0,1)]))
     #[(0,3), (0,0), (2,8)] + [(1,1), (2,1), (0,1)] = [(1,4), (2,1), (2,9)]
@@ -204,4 +309,23 @@ if __name__ == '__main__':
     #[[(0, -2), (0, -1)], [(1, -2), (2, -4)]]
     print(adjunta([[(0,2), (0,1)], [(1,2), (2,4)]]))
     #[[(0, -2), (1, -2)], [(0, -1), (2, -4)]]
-    print(transpuesta([[(0,2), (0,1)], [(1,2), (2,4)]]))
+    print(multiplicacionMatrices([[(4, 0), (1, 0), (3, 0)], [(2, 0), (1, 0), (2, 0)], [(4, 0), (1, 0), (5, 0)]],
+                                 [[(1, 0), (1, 0), (2, 0)], [(1, 0), (2, 0), (3, 0)], [(2, 0), (3, 0), (1, 0)]]))
+    #[[(11, 0), (15, 0), (14, 0)], [(7, 0), (10, 0), (9, 0)], [(15, 0), (21, 0), (16, 0)]]
+    print(accion([[(4, 0), (1, 0), (3, 0)], [(2, 0), (1, 0), (2, 0)], [(4, 0), (1, 0), (5, 0)]],
+                 [[(2, 0)], [(3, 0)], [(1, 0)]]))
+    #[[(14, 0)], [(9, 0)], [(16, 0)]]
+    print(productoInterno([[(2, 0)], [(3, 1)], [(1, 4)]], [[(4, 1)], [(1, 2)], [(3, 3)]]))
+    #(28, -2)
+    print(norma([[(2, 0)], [(3, 1)], [(1, 4)]]))
+    #5.5677643628300215
+    print(distancia([[(2, 0)], [(3, 1)], [(1, 4)]], [[(4, 1)], [(1, 2)], [(3, 3)]]))
+    #3.872983346207417
+    print(unitaria([[(-5, 2), (1, -1), (7, -2)], [(2, 0), (3, 3), (-3, 5)], [(8, 10), (1, 0), (9, 5)]]))
+    #False
+    print(hermitiana([[(-1, 0), (0, -1)], [(0, 1), (1, 0)]]))
+    #True
+    print(productoTensor([(3, 0), (1, 0)], [(2,1), (0,1), (2,0)]))
+    #[(6, 3), (0, 3), (6, 0), (2, 1), (0, 1), (2, 0)]
+
+
