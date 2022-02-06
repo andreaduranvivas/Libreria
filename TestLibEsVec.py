@@ -8,6 +8,7 @@ import LibEspacioVectorial as lev
 import unittest
 
 class TestCplxOperations (unittest.TestCase):
+
     def testSumavec (self):
         suma = lev.sumavec([(0,3), (0,0), (2,8)], [(1,1), (2,1), (0,1)])
         self.assertAlmostEqual(suma, [(1,4), (2,1), (2,9)])
