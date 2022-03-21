@@ -40,15 +40,30 @@ LibEspacioVectorial (Librería con operaciones entre vectores y matrices complej
   28.  Revisar si una matriz es unitaria
   29.  Revisar si una matriz es hermitiana
   30.  Producto tensor de dos matrices/vectores
+  31.  Módulo cuadrado de un vector.
+  32.  Módulo cuadrado de un complejo.
+  33.  Normalizar un vector.
+  34.  Hallar la matriz identidad.
 
 Usando la librería unittest de Python, se crearon las pruebas respectivas para
 cada operación. Estas pruebas unitarias se encuentran en los archivos TestLibcplx.py y
 TestLibEsVec.py que se encuentran dentro del directorio
 
 Adicionalmente, se pueden encontrar los retos de programación del capítulo 3 del
-libro guía Quantum Computing for Computer Scientists dentro del archivo retosProgramacion.py
+libro guía Quantum Computing for Computer Scientists dentro del archivo retosProgramacion.py junto 
+con sus respectivas pruebas en el archivo TestRetos.py
 
-Cada documento hecho en Pycharm tiene su respectivo
-documento dedicado a las pruebas de las funciones.
+Aquí se encuentra:
+
+1. Los experimentos de la canicas con coeficiente booleanos
+2. Experimentos de las múltiples rendijas clásico probabilístico, con más de dos rendijas.
+3. Experimento de las múltiples rendijas cuántico.
+4. Función que grafica con un diagrama de barras las probabilidades de un vector de estados.
+5. Función que calcula la probabilidad de encontrar una partícula en una posición en particular.
+6. Función que calcula la amplitud de transición.
+7. Función que calcula la probabilidad de transitar.
+8. Función que calcula la media del observable en el estado dado.
+9. Función que calcula la varianza del observable en el estado dado.
+10. Función que calcula el delta del observable en el estado dado.
 
 Autora: Andrea Durán Vivas
