@@ -1,8 +1,11 @@
 # Librería de números complejos
 Librería de operaciones con números complejos, 
 contiene operaciones entre números, vectores y matrices dentro
-de los archivos Libcplx.py, LibEspacioVectorial.py y
-retosProgramacion.py
+de los archivos Libcplx.py, LibEspacioVectorial.py
+retosProgramacion.py, retosTest.py
+
+Todos los programas se escribieron en el lenguaje de programación
+de Python
 
 Contenido del directorio:
 
